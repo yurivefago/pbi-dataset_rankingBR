@@ -1,0 +1,7 @@
+let
+    Fonte = Csv.Document(File.Contents("C:\VEFAGO, YURI - Arquivos\3. EM EXECUÇÃO\2023\ETL Python PBI - Brasileirão\ranking_por_edicao_2003_2021_estados.csv"),[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+    #"Executar script Python" = Python.Execute("# 'dataset' tem os dados de entrada para este script#(lf)#(lf)dataset[""Estado""] = dataset[""Estado""].str.upper()#(lf)#(lf)dataset[""Saldo_Gols""] = dataset[""Gols_Pro""] - dataset[""Gols_Contra""]#(lf)#(lf)dataset[""Aprov_%""] = 100 * dataset[""Pontos""] / (dataset[""Jogos""] * 3)#(lf)#(lf)dataset[""Aprov_%""] = dataset[""Aprov_%""].round(2)",[dataset=#"Cabeçalhos Promovidos"]),
+    dataset = #"Executar script Python"{[Name="dataset"]}[Value]
+in
+    dataset
